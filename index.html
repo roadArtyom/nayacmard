@@ -5,8 +5,6 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="Discover Nayac Mard - a new era of elegance and fashion, coming soon. Stay tuned for our exclusive clothing brand.">
-    <meta name="keywords" content="Nayac Mard, Nayac, Mard, Coming Soon, Clothing Brand, Fashion, Style, Elegance, New Collection">
     <title>Nayaծ Mard</title>
     <link rel="icon" href="images/favicon-32x32.png" type="favicon-16x16.png" sizes="32x32">
     <style>
@@ -35,7 +33,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
+            background:
                 radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(255,255,255,0.05) 0%, transparent 50%),
                 linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.03) 50%, transparent 52%);
@@ -64,13 +62,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
         }
 
         .silhouette {
             position: absolute;
             width: 400px;
             height: 600px;
-            background: linear-gradient(180deg, 
+            background: linear-gradient(180deg,
                 transparent 0%,
                 rgba(255, 255, 255, 0.03) 20%,
                 rgba(255, 255, 255, 0.05) 40%,
@@ -100,7 +99,7 @@
             max-width: 300px;
             height: auto;
             filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
-            animation: float 8s ease-in-out infinite, horizontalSlide 20s ease-in-out infinite;
+            animation: float 8s ease-in-out infinite;
             transition: all 0.5s ease;
             position: relative;
             z-index: 2;
@@ -152,12 +151,6 @@
             0% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-15px) rotate(1deg); }
             100% { transform: translateY(0px) rotate(0deg); }
-        }
-
-        @keyframes horizontalSlide {
-            0% { left: 0; }
-            50% { left: calc(100vw - 300px); }
-            100% { left: 0; }
         }
 
         main {
@@ -410,7 +403,7 @@
         }
 
         @keyframes particleFloat {
-            0% { 
+            0% {
                 transform: translateY(0) translateX(0) rotate(0deg) scale(1);
                 opacity: 0;
             }
@@ -426,7 +419,7 @@
                 transform: translateY(-75vh) translateX(50px) rotate(270deg) scale(1.5);
                 opacity: 0.8;
             }
-            100% { 
+            100% {
                 transform: translateY(-100vh) translateX(0) rotate(360deg) scale(1);
                 opacity: 0;
             }
@@ -584,6 +577,7 @@
                 font-size: 1rem;
             }
         }
+
     </style>
 </head>
 <body>
@@ -597,7 +591,7 @@
         <h1 class="coming-soon">Coming Soon</h1>
         <div class="nationality-text">Nationality Doesn't Matter</div>
         <p class="description">
-            We're crafting something extraordinary. A new era of elegance is approaching. 
+            We're crafting something extraordinary. A new era of elegance is approaching.
             Stay tuned for our grand unveiling.
         </p>
     </main>
@@ -639,6 +633,7 @@
             for (let i = 0; i < columns; i++) {
                 const column = document.createElement('div');
                 column.className = 'matrix-column';
+        <div class="name">Heraxos</div>
                 column.style.left = (i * 20) + 'px';
                 column.style.animationDuration = (Math.random() * 2 + 1) + 's';
                 column.style.animationDelay = Math.random() * 2 + 's';
