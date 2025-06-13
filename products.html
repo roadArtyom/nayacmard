@@ -1,0 +1,1122 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Nayaծ Mard - Products</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="images/favicon-32x32.png" type="favicon-16x16.png" sizes="32x32">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Add fluid typography and responsive scaling */
+        :root {
+            --header-height: clamp(50px, 8vh, 80px);
+            --footer-height: clamp(50px, 8vh, 80px);
+            --content-padding: clamp(10px, 2vw, 20px);
+            --section-spacing: clamp(20px, 4vh, 40px);
+            --card-gap: clamp(15px, 3vw, 30px);
+            --primary-color: #ffffff;
+            --secondary-color: #000000;
+            --accent-color: #333333;
+            --text-color: #ffffff;
+            --background-color: #000000;
+            --overlay-color: rgba(0, 0, 0, 0.8);
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #000000, #0a0a0a, #000000);
+            position: relative;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            font-size: clamp(14px, 1.5vw, 16px);
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.05) 0%, transparent 50%),
+                linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.03) 50%, transparent 52%);
+            background-size: 100% 100%, 100% 100%, 30px 30px;
+            animation: pulse 15s infinite, gridMove 20s linear infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.2; }
+            100% { transform: scale(1); opacity: 0.3; }
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 0 0, 0 0, 30px 30px; }
+        }
+
+        header {
+            padding: var(--content-padding);
+            background: var(--overlay-color);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: auto;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--content-padding);
+            flex-wrap: wrap;
+            min-height: var(--header-height);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: clamp(15px, 2.5vw, 30px);
+            flex-wrap: wrap;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: clamp(10px, 1.5vw, 20px);
+            flex-wrap: wrap;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .flags-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .flag {
+            width: clamp(20px, 2.5vw, 28px);
+            height: auto;
+            border-radius: 2px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            filter: grayscale(100%);
+            opacity: 0.7;
+        }
+
+        .flag.active {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .flag:hover {
+            transform: scale(1.1);
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+
+        .header-text {
+            font-size: clamp(0.8rem, 1.1vw, 1rem);
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            opacity: 0.9;
+            font-weight: 300;
+            white-space: normal;
+            line-height: 1.2;
+        }
+
+        .logo {
+            max-width: clamp(120px, 20vw, 300px);
+            height: auto;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
+            animation: float 8s ease-in-out infinite;
+            transition: all 0.5s ease;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, #fff, transparent, #fff);
+            border-radius: 10px;
+            z-index: -1;
+            animation: borderGlow 3s linear infinite;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .logo:hover::after {
+            opacity: 1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes borderGlow {
+            0% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0.5; transform: scale(1); }
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.6));
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .logo-link {
+            text-decoration: none;
+            color: inherit;
+            display: inline-block;
+            min-width: 0;
+        }
+
+        /* Styles for the loader logo text */
+        .loader-logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: clamp(2px, 0.5vw, 5px);
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Styles for the footer logo text */
+        .footer-logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(0.7rem, 1.2vw, 1rem);
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            filter: drop_shadow(0 0 5px rgba(255, 255, 255, 0.3));
+            transition: all 0.3s ease;
+        }
+
+        .footer-logo-text:hover {
+            opacity: 1;
+            filter: drop_shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+
+        .back-btn {
+            color: #fff;
+            text-decoration: none;
+            padding: clamp(6px, 1vw, 10px) clamp(12px, 2vw, 20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-size: clamp(0.8rem, 1vw, 1rem);
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(45deg, rgba(255,255,255,0.2), rgba(255,255,255,0.3));
+            transform: translateY(-2px);
+        }
+
+        .products-container {
+            flex: 1;
+            padding: calc(var(--header-height) + var(--section-spacing)) var(--content-padding) calc(var(--footer-height) + var(--section-spacing));
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+            gap: 30px;
+            max-width: min(1400px, 95vw);
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            min-height: calc(100vh - var(--header-height) - var(--footer-height));
+            margin-top: var(--header-height);
+        }
+
+        .product-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+        }
+
+        .product-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .product-card:hover::before,
+        .product-card:hover::after {
+            opacity: 1;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .product-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 80%, rgba(0,0,0,0.3));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-card:hover .product-image::after {
+            opacity: 1;
+        }
+
+        .product-info {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 20px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            position: relative;
+            z-index: 2;
+        }
+
+        .product-title {
+            font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+            line-height: 1.4;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .product-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255,255,255,0.5), transparent);
+            transition: width 0.3s ease;
+        }
+
+        .product-card:hover .product-title::after {
+            width: 60px;
+        }
+
+        .product-price {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        .add-to-cart-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            text-decoration: none;
+            font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 30px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            width: 100%;
+            text-align: center;
+            margin-top: auto;
+            font-weight: 600;
+        }
+
+        .add-to-cart-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,255,255,0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            background: linear-gradient(45deg, rgba(255,255,255,0.2), rgba(255,255,255,0.3));
+        }
+
+        .add-to-cart-btn:hover::before {
+            left: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                padding: var(--content-padding) 0;
+                justify-content: center;
+            }
+
+            .header-left, .header-right {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 10px;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .flags-container {
+                margin-top: 0;
+                justify-content: center;
+            }
+
+            .logo {
+                max-width: clamp(100px, 15vw, 150px);
+            }
+
+            .header-text {
+                font-size: clamp(0.7rem, 1vw, 0.9rem);
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .footer-motto {
+                font-size: clamp(0.7rem, 1vw, 0.9rem);
+            }
+
+            .back-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+
+            .products-container {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+                padding: calc(var(--header-height) + 20px) 20px calc(var(--footer-height) + 20px);
+            }
+
+            .product-image {
+                height: 250px;
+            }
+
+            .product-info {
+                padding: 18px;
+                gap: 12px;
+            }
+
+            .product-title {
+                font-size: clamp(1.1rem, 4vw, 1.4rem);
+            }
+
+            .product-price {
+                font-size: clamp(1rem, 3.5vw, 1.2rem);
+            }
+
+            .add-to-cart-btn {
+                padding: 10px 20px;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-left, .header-right {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .logo {
+                max-width: clamp(80px, 12vw, 120px);
+            }
+
+            .header-text {
+                font-size: clamp(0.6rem, 0.9vw, 0.8rem);
+            }
+
+            .social-links {
+                right: 8px;
+                gap: 8px;
+            }
+
+            .contact-info {
+                left: 8px;
+            }
+
+            .social-link {
+                width: clamp(30px, 4vw, 40px);
+                height: clamp(30px, 4vw, 40px);
+                font-size: clamp(16px, 1.8vw, 20px);
+            }
+
+            .footer-logo {
+                width: clamp(25px, 4vw, 40px);
+            }
+
+            .footer-text {
+                font-size: clamp(0.7rem, 1vw, 0.9rem);
+            }
+
+            .view-products-btn {
+                width: calc(100% - 16px);
+                padding: clamp(8px, 1.5vw, 12px) clamp(16px, 3vw, 30px);
+                font-size: clamp(0.8rem, 1.1vw, 1.1rem);
+            }
+
+            .products-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: calc(var(--header-height) + 10px) 10px calc(var(--footer-height) + 10px);
+            }
+
+            .product-image {
+                height: 200px;
+            }
+
+            .product-info {
+                padding: 12px;
+                gap: 8px;
+            }
+
+            .product-title {
+                font-size: clamp(0.9rem, 4vw, 1.1rem);
+            }
+
+            .product-price {
+                font-size: clamp(0.8rem, 3.5vw, 1rem);
+            }
+
+            .add-to-cart-btn {
+                padding: 8px 15px;
+                font-size: 0.75rem;
+                letter-spacing: 0.2px;
+            }
+        }
+
+        footer {
+            padding: var(--content-padding);
+            background: linear-gradient(to right,
+                rgba(0, 0, 0, 0.95),
+                rgba(0, 0, 0, 0.98),
+                rgba(0, 0, 0, 0.95)
+            );
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: var(--footer-height);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--content-padding);
+        }
+
+        .footer-text {
+            color: #888;
+            font-size: clamp(0.8rem, 1vw, 1rem);
+            display: flex;
+            align-items: center;
+            gap: clamp(10px, 1.5vw, 15px);
+            letter-spacing: 1px;
+        }
+
+        .footer-logo {
+            width: clamp(30px, 5vw, 50px);
+            height: auto;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+            transition: all 0.5s ease;
+        }
+
+        .footer-logo:hover {
+            opacity: 1;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6));
+        }
+
+        .footer-motto {
+            font-size: clamp(0.8rem, 1vw, 1rem);
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: particleFloat 30s infinite linear;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+                opacity: 0;
+            }
+            25% {
+                transform: translateY(-25vh) translateX(50px) rotate(90deg) scale(1.5);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-50vh) translateX(100px) rotate(180deg) scale(1);
+                opacity: 0.4;
+            }
+            75% {
+                transform: translateY(-75vh) translateX(50px) rotate(270deg) scale(1.5);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(0) rotate(360deg) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.1;
+            mix-blend-mode: screen;
+        }
+
+        .matrix-column {
+            position: absolute;
+            top: -100%;
+            width: 20px;
+            color: #0f0;
+            font-family: monospace;
+            font-size: 14px;
+            text-shadow: 0 0 5px #0f0;
+            animation: matrixFall linear infinite;
+        }
+
+        @keyframes matrixFall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        .glitch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0;
+            animation: glitchOverlay 10s infinite;
+        }
+
+        @keyframes glitchOverlay {
+            0% { opacity: 0; }
+            2% { opacity: 0.1; transform: translateX(-5px); }
+            4% { opacity: 0; }
+            6% { opacity: 0.1; transform: translateX(5px); }
+            8% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        .social-links {
+            position: fixed;
+            right: clamp(10px, 2vw, 30px);
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(10px, 2vw, 20px);
+            z-index: 100;
+        }
+
+        .social-link {
+            width: clamp(35px, 5vw, 50px);
+            height: clamp(35px, 5vw, 50px);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #fff;
+            font-size: clamp(18px, 2vw, 24px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #fff, transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .social-link:hover::before {
+            opacity: 0.2;
+        }
+
+        .contact-info {
+            position: fixed;
+            left: clamp(10px, 2vw, 30px);
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: clamp(0.8rem, 1.2vw, 1.2rem);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+        }
+
+        .contact-info:hover {
+            opacity: 1;
+        }
+
+        /* Add smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Improve touch targets on mobile */
+        @media (hover: none) {
+            .social-link,
+            .view-products-btn,
+            .back-btn {
+                min-height: 44px;
+                min-width: 44px;
+            }
+        }
+
+        /* Loader Styles */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loader-logo {
+            width: 150px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .loader-bar {
+            width: 300px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .loader-bar::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            animation: loading 2.5s ease-in-out forwards;
+        }
+
+        @keyframes loading {
+            0% { width: 0; left: 0; }
+            50% { width: 100%; left: 0; }
+            100% { width: 0; left: 100%; }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <img src="images/nayacmardBlackLogo - Copy.jpg" alt="Loader Logo" class="loader-logo">
+        <div class="loader-bar"></div>
+    </div>
+    <div class="particles" id="particles"></div>
+    <header>
+        <div class="header-content">
+            <a href="index.html">
+                <img src="images/nayacmardBlackLogo - Copy.jpg" alt="Logo" class="logo">
+            </a>
+            <div class="flags-container">
+                <img src="images/flag.jpg" alt="Armenian Flag" class="flag" data-lang="am" onclick="switchLanguage('am')">
+                <img src="images/AmericanFlag-480x300.png" alt="American Flag" class="flag" data-lang="en" onclick="switchLanguage('en')">
+            </div>
+            <a href="index.html" class="back-btn">Back to Home</a>
+        </div>
+    </header>
+
+    <main class="products-container">
+        <!-- Product Cards will be inserted here by JavaScript -->
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-text">
+                <img src="images/nayacmardBlackLogo - Copy.jpg" alt="Logo" class="footer-logo">
+                © 2025 All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loader functionality
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loader = document.querySelector('.loader');
+                loader.style.opacity = '0';
+                setTimeout(function() {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 2000); // Adjust this timeout to match your loading time
+        });
+
+        // Create matrix rain effect
+        function createMatrixRain() {
+            const container = document.createElement('div');
+            container.className = 'matrix-rain';
+            document.body.appendChild(container);
+
+            const columns = Math.floor(window.innerWidth / 20);
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = (i * 20) + 'px';
+                column.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                column.style.animationDelay = Math.random() * 2 + 's';
+                column.textContent = Array(20).fill(0).map(() =>
+                    String.fromCharCode(Math.random() * 93 + 33)
+                ).join('');
+                container.appendChild(column);
+            }
+        }
+
+        // Create glitch overlay
+        function createGlitchOverlay() {
+            const overlay = document.createElement('div');
+            overlay.className = 'glitch-overlay';
+            overlay.style.background = 'linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.1) 50%, transparent 52%)';
+            overlay.style.backgroundSize = '30px 30px';
+            document.body.appendChild(overlay);
+        }
+
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 150; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDelay = Math.random() * 30 + 's';
+            particle.style.animationDuration = (Math.random() * 20 + 20) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Initialize effects
+        createMatrixRain();
+        createGlitchOverlay();
+
+        // Language configuration
+        const languages = {
+            am: {
+                backBtn: "Վերադառնալ",
+                currency: "֏",
+                currencyCode: "AMD"
+            },
+            en: {
+                backBtn: "Back to Home",
+                currency: "$",
+                currencyCode: "USD"
+            }
+        };
+
+        let currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('selectedLanguage', lang);
+            
+            // Update UI elements
+            document.querySelector('.back-btn').textContent = languages[lang].backBtn;
+            
+            // Update active flag
+            document.querySelectorAll('.flag').forEach(flag => {
+                flag.classList.remove('active');
+            });
+            document.querySelector(`.flag[data-lang="${lang}"]`).classList.add('active');
+            
+            // Update products display
+            displayProducts();
+        }
+
+        function displayProducts() {
+            const productsGrid = document.querySelector('.products-container');
+            productsGrid.innerHTML = '';
+
+            const products = [
+                {
+                    id: 1,
+                    name: {
+                        am: "սև շապիկ",
+                        en: "Black T-Shirt"
+                    },
+                    price: {
+                        am: 25000,
+                        en: 65
+                    },
+                    image: "images/5352689841629951194.jpg"
+                },
+                {
+                    id: 2,
+                    name: {
+                        am: "Թերմոս",
+                        en: "Termos"
+                    },
+                    price: {
+                        am: 15000,
+                        en: 40
+                    },
+                    image: "images/5352689841629951204.jpg"
+                },
+                {
+                    id: 3,
+                    name: {
+                        am: "Սպիտակ Շապիկ",
+                        en: "White T-Shirt"
+                    },
+                    price: {
+                        am: 12000,
+                        en: 30
+                    },
+                    image: "images/5352689841629951198.jpg"
+                },
+                {
+                    id: 4,
+                    name: {
+                        am: "Կապույտ Շապիկ",
+                        en: "Blue T-Shirt"
+                    },
+                    price: {
+                        am: 25000,
+                        en: 65
+                    },
+                    image: "images/5352689841629951194.jpg"
+                },
+                {
+                    id: 5,
+                    name: {
+                        am: "Սև Հուդի",
+                        en: "Black Hoodie"
+                    },
+                    price: {
+                        am: 35000,
+                        en: 90
+                    },
+                    image: "images/5352689841629951194.jpg"
+                },
+                {
+                    id: 6,
+                    name: {
+                        am: "Սպիտակ Հուդի",
+                        en: "White Hoodie"
+                    },
+                    price: {
+                        am: 35000,
+                        en: 90
+                    },
+                    image: "images/5352689841629951194.jpg"
+                }
+            ];
+
+            products.forEach((product, index) => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.style.setProperty('--card-index', index);
+                
+                const price = product.price[currentLanguage];
+                const currency = languages[currentLanguage].currency;
+
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name[currentLanguage]}" class="product-image">
+                    <div class="product-info">
+                        <h2 class="product-title">${product.name[currentLanguage]}</h2>
+                        <p class="product-price">${currency}${price}</p>
+                        <button class="add-to-cart-btn">Add to Cart</button>
+                    </div>
+                `;
+
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            switchLanguage(currentLanguage);
+            displayProducts();
+        });
+    </script>
+</body>
+</html> 
