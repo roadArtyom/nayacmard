@@ -460,7 +460,7 @@
             .header-content {
                 flex-direction: column;
                 gap: 15px;
-                padding: var(--content-padding) 0;
+                padding: 10px;
                 justify-content: center;
             }
 
@@ -478,32 +478,24 @@
             }
 
             .logo {
-                max-width: clamp(100px, 15vw, 150px);
+                max-width: 120px;
             }
 
             .header-text {
-                font-size: clamp(0.7rem, 1vw, 0.9rem);
-            }
-
-            .footer-content {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-            }
-
-            .footer-motto {
-                font-size: clamp(0.7rem, 1vw, 0.9rem);
-            }
-
-            .back-btn {
-                padding: 8px 15px;
-                font-size: 0.9rem;
+                font-size: 14px;
             }
 
             .products-container {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 25px;
-                padding: calc(var(--header-height) + 20px) 20px calc(var(--footer-height) + 20px);
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 80px 15px 70px;
+                margin-top: 60px;
+            }
+
+            .product-card {
+                margin: 0 auto;
+                width: 100%;
+                max-width: 400px;
             }
 
             .product-image {
@@ -511,71 +503,65 @@
             }
 
             .product-info {
-                padding: 18px;
-                gap: 12px;
+                padding: 15px;
+                gap: 10px;
             }
 
             .product-title {
-                font-size: clamp(1.1rem, 4vw, 1.4rem);
+                font-size: 18px;
             }
 
             .product-price {
-                font-size: clamp(1rem, 3.5vw, 1.2rem);
+                font-size: 16px;
             }
 
             .add-to-cart-btn {
-                padding: 10px 20px;
-                font-size: 0.85rem;
+                padding: 12px 20px;
+                font-size: 14px;
+                width: 100%;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+                padding: 10px;
+            }
+
+            .footer-text {
+                font-size: 12px;
+            }
+
+            .footer-logo {
+                width: 30px;
             }
         }
 
         @media (max-width: 480px) {
-            .header-left, .header-right {
-                flex-direction: column;
-                gap: 8px;
+            .header-content {
+                padding: 8px;
             }
 
             .logo {
-                max-width: clamp(80px, 12vw, 120px);
+                max-width: 100px;
             }
 
             .header-text {
-                font-size: clamp(0.6rem, 0.9vw, 0.8rem);
+                font-size: 12px;
             }
 
-            .social-links {
-                right: 8px;
-                gap: 8px;
-            }
-
-            .contact-info {
-                left: 8px;
-            }
-
-            .social-link {
-                width: clamp(30px, 4vw, 40px);
-                height: clamp(30px, 4vw, 40px);
-                font-size: clamp(16px, 1.8vw, 20px);
-            }
-
-            .footer-logo {
-                width: clamp(25px, 4vw, 40px);
-            }
-
-            .footer-text {
-                font-size: clamp(0.7rem, 1vw, 0.9rem);
-            }
-
-            .view-products-btn {
-                width: calc(100% - 16px);
-                padding: clamp(8px, 1.5vw, 12px) clamp(16px, 3vw, 30px);
-                font-size: clamp(0.8rem, 1.1vw, 1.1rem);
+            .back-btn {
+                padding: 8px 15px;
+                font-size: 12px;
             }
 
             .products-container {
-                grid-template-columns: 1fr;
+                padding: 70px 10px 60px;
                 gap: 15px;
-                padding: calc(var(--header-height) + 10px) 10px calc(var(--footer-height) + 10px);
+            }
+
+            .product-card {
+                max-width: 100%;
             }
 
             .product-image {
@@ -584,21 +570,86 @@
 
             .product-info {
                 padding: 12px;
-                gap: 8px;
             }
 
             .product-title {
-                font-size: clamp(0.9rem, 4vw, 1.1rem);
+                font-size: 16px;
             }
 
             .product-price {
-                font-size: clamp(0.8rem, 3.5vw, 1rem);
+                font-size: 14px;
             }
 
             .add-to-cart-btn {
-                padding: 8px 15px;
-                font-size: 0.75rem;
-                letter-spacing: 0.2px;
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+
+            .footer-content {
+                padding: 8px;
+            }
+
+            .footer-text {
+                font-size: 11px;
+            }
+
+            .footer-logo {
+                width: 25px;
+            }
+        }
+
+        /* Add these new styles for better mobile experience */
+        .product-card {
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            perspective: 1000;
+            -webkit-perspective: 1000;
+        }
+
+        .product-image {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:active {
+            transform: scale(0.98);
+        }
+
+        /* Improve touch targets */
+        .add-to-cart-btn,
+        .back-btn {
+            min-height: 44px;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Prevent text selection */
+        .product-card,
+        .add-to-cart-btn,
+        .back-btn {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Improve scrolling */
+        body {
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
+        }
+
+        /* Fix for iOS safe areas */
+        @supports (padding: max(0px)) {
+            .products-container {
+                padding-left: max(15px, env(safe-area-inset-left));
+                padding-right: max(15px, env(safe-area-inset-right));
+                padding-bottom: max(70px, env(safe-area-inset-bottom));
             }
         }
 
