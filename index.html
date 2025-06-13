@@ -98,6 +98,14 @@
             margin: 0;
             padding: 0;
             font-size: clamp(14px, 1.5vw, 16px);
+            overflow-x: hidden;
+            touch-action: pan-y;
+            height: 100%;
+        }
+
+        html {
+            height: 100%;
+            overflow: hidden;
         }
 
         body::before {
@@ -1035,6 +1043,56 @@
                 font-size: 0.9rem;
                 padding: 0 1rem;
             }
+        }
+
+        .page {
+            width: 100%;
+            height: 100vh;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+            overscroll-behavior: contain;
+            position: relative;
+            isolation: isolate;
+            padding-top: var(--header-height);
+            padding-bottom: var(--footer-height);
+        }
+
+        /* Remove the universal overflow-x hidden as it might interfere with scrolling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Ensure content containers don't cause horizontal scroll */
+        .container, 
+        .content-wrapper,
+        .section {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .page::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .page::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .page::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        .page::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
         }
     </style>
 </head>
