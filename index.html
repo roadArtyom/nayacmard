@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="hy">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -30,29 +30,44 @@
             }
         };
 
-        let currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+        let currentLanguage = localStorage.getItem('selectedLanguage') || 'am';
 
         function switchLanguage(lang) {
             currentLanguage = lang;
             localStorage.setItem('selectedLanguage', lang);
             document.documentElement.lang = lang;
-            document.querySelector('.coming-soon').textContent = languages[lang].comingSoon;
-            document.querySelector('.nationality-text').textContent = languages[lang].nationalityText;
-            document.querySelector('.description').textContent = languages[lang].description;
-            document.querySelector('.view-products-btn').textContent = languages[lang].viewProducts;
-            document.querySelector('.footer-motto').textContent = languages[lang].footerMotto;
-            document.querySelector('.header-text').textContent = languages[lang].nationalityText;
-            
+
+            const updateTextContent = (selector, text) => {
+                const element = document.querySelector(selector);
+                if (element) {
+                    element.textContent = text;
+                } else {
+                    console.warn(`Element with selector ${selector} not found.`);
+                }
+            };
+
+            updateTextContent('.coming-soon', languages[lang].comingSoon);
+            updateTextContent('.nationality-text', languages[lang].nationalityText);
+            updateTextContent('.description', languages[lang].description);
+            updateTextContent('.view-products-btn', languages[lang].viewProducts);
+            updateTextContent('.footer-motto', languages[lang].footerMotto);
+            updateTextContent('.header-text', languages[lang].nationalityText);
+
             // Update active flag styles
             document.querySelectorAll('.flag').forEach(flag => {
                 flag.classList.remove('active');
             });
-            document.querySelector(`.flag[data-lang="${lang}"]`).classList.add('active');
+            const activeFlag = document.querySelector(`.flag[data-lang="${lang}"]`);
+            if (activeFlag) {
+                activeFlag.classList.add('active');
+            } else {
+                console.warn(`Flag with data-lang="${lang}" not found.`);
+            }
         }
 
-        // Initialize language from localStorage or default to English
+        // Initialize language from localStorage or default to Armenian
         document.addEventListener('DOMContentLoaded', () => {
-            const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+            const savedLanguage = localStorage.getItem('selectedLanguage') || 'am';
             switchLanguage(savedLanguage);
         });
     </script>
