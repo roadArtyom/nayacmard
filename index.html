@@ -260,21 +260,20 @@
         }
 
         main {
-            flex: 1;
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: calc(var(--header-height) + var(--section-spacing)) var(--content-padding) calc(var(--footer-height) + var(--section-spacing));
+            padding: 0 var(--content-padding);
             position: relative;
-            z-index: 1;
-            min-height: calc(100vh - var(--header-height) - var(--footer-height));
-            margin-top: var(--header-height);
+            z-index: 10;
+            padding-top: var(--header-height);
         }
 
         .coming-soon {
-            font-size: clamp(2rem, 5vw, 5rem);
+            font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 900;
             margin-bottom: clamp(20px, 4vh, 30px);
             text-transform: uppercase;
