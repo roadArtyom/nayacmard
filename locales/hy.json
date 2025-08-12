@@ -1,0 +1,90 @@
+{
+    "nav": {
+        "home": "Գլխավոր",
+        "catalog": "Կատալոգ",
+        "size": "Չափեր",
+        "delivery": "Առաքում & Վճարում",
+        "contacts": "Կոնտակտներ"
+    },
+    "hero": {
+        "title": "Premium հագուստ",
+        "subtitle": "և աքսեսուարներ",
+        "description": "Բացահայտեք մեր հավաքածուն՝ նախագծված ոճով և հարմարավետությամբ"
+    },
+    "cta": {
+        "whatsapp": "Գրել WhatsApp-ում",
+        "wb": "Դիտել Wildberries-ում",
+        "whatsapp-float": "Գրել WhatsApp-ում",
+        "share": "Կիսվել"
+    },
+    "filter": {
+        "all": "Բոլորը",
+        "hoodies": "Hoodies",
+        "t-shirts": "T-Shirts",
+        "pants": "Pants",
+        "accessories": "Accessories",
+        "size-all": "Բոլոր չափերը",
+        "color-all": "Բոլոր գույները",
+        "color-black": "Սև",
+        "color-white": "Սպիտակ",
+        "color-gray": "Մոխրագույն",
+        "color-red": "Կարմիր",
+        "color-blue": "Կապույտ",
+        "color-green": "Կանաչ",
+        "results": "Արդյունքներ:"
+    },
+    "size": {
+        "title": "Չափերի աղյուսակ",
+        "chest": "Կուրծք",
+        "waist": "Գոտկատեղ",
+        "hips": "Կոնք",
+        "length": "Երկարություն",
+        "size": "Չափ",
+        "tips": "Չափերը նշված են սանտիմետրերով: Եթե կասկածում եք, խորհուրդ ենք տալիս ընտրել մեծ չափը:"
+    },
+    "delivery": {
+        "title": "Առաքում & Վճարում",
+        "yerevan": {
+            "title": "Երևան",
+            "desc": "Նույն օրը կամ հաջորդ օրը"
+        },
+        "regions": {
+            "title": "Մարզեր",
+            "desc": "1-3 օր"
+        },
+        "payment": {
+            "title": "Վճարում",
+            "desc": "Կանխիկ կամ քարտ"
+        },
+        "returns": {
+            "title": "Վերադարձ",
+            "desc": "14 օրվա ընթացքում"
+        }
+    },
+    "contacts": {
+        "title": "Կոնտակտներ",
+        "phone": "Հեռախոս",
+        "email": "Էլ. փոստ",
+        "instagram": "Instagram",
+        "facebook": "Facebook"
+    },
+    "product": {
+        "size": "Չափ",
+        "color": "Գույն"
+    },
+    "badge": {
+        "new": "Նոր",
+        "sale": "Զեղչ"
+    },
+    "footer": {
+        "rights": "© 2024 NayacMard Store. Բոլոր իրավունքները պաշտպանված են:"
+    },
+    "search": {
+        "placeholder": "Որոնել ապրանքներ..."
+    },
+    "modal": {
+        "close": "Փակել",
+        "previous": "Նախորդ",
+        "next": "Հաջորդ"
+    }
+}

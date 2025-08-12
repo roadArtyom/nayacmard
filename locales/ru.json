@@ -1,0 +1,90 @@
+{
+    "nav": {
+        "home": "Главная",
+        "catalog": "Каталог",
+        "size": "Размеры",
+        "delivery": "Доставка & Оплата",
+        "contacts": "Контакты"
+    },
+    "hero": {
+        "title": "Премиальная одежда",
+        "subtitle": "и аксессуары",
+        "description": "Откройте нашу коллекцию, созданную со стилем и комфортом"
+    },
+    "cta": {
+        "whatsapp": "Написать в WhatsApp",
+        "wb": "Посмотреть на Wildberries",
+        "whatsapp-float": "Написать в WhatsApp",
+        "share": "Поделиться"
+    },
+    "filter": {
+        "all": "Все",
+        "hoodies": "Худи",
+        "t-shirts": "Футболки",
+        "pants": "Брюки",
+        "accessories": "Аксессуары",
+        "size-all": "Все размеры",
+        "color-all": "Все цвета",
+        "color-black": "Черный",
+        "color-white": "Белый",
+        "color-gray": "Серый",
+        "color-red": "Красный",
+        "color-blue": "Синий",
+        "color-green": "Зеленый",
+        "results": "Результаты:"
+    },
+    "size": {
+        "title": "Таблица размеров",
+        "chest": "Грудь",
+        "waist": "Талия",
+        "hips": "Бедра",
+        "length": "Длина",
+        "size": "Размер",
+        "tips": "Размеры указаны в сантиметрах. Если вы сомневаетесь, мы рекомендуем выбрать больший размер."
+    },
+    "delivery": {
+        "title": "Доставка & Оплата",
+        "yerevan": {
+            "title": "Ереван",
+            "desc": "В тот же день или на следующий день"
+        },
+        "regions": {
+            "title": "Регионы",
+            "desc": "1-3 дня"
+        },
+        "payment": {
+            "title": "Оплата",
+            "desc": "Наличными или картой"
+        },
+        "returns": {
+            "title": "Возврат",
+            "desc": "В течение 14 дней"
+        }
+    },
+    "contacts": {
+        "title": "Контакты",
+        "phone": "Телефон",
+        "email": "Эл. почта",
+        "instagram": "Instagram",
+        "facebook": "Facebook"
+    },
+    "product": {
+        "size": "Размер",
+        "color": "Цвет"
+    },
+    "badge": {
+        "new": "НОВИНКА",
+        "sale": "СКИДКА"
+    },
+    "footer": {
+        "rights": "© 2024 NayacMard Store. Все права защищены."
+    },
+    "search": {
+        "placeholder": "Поиск товаров..."
+    },
+    "modal": {
+        "close": "Закрыть",
+        "previous": "Предыдущий",
+        "next": "Следующий"
+    }
+}

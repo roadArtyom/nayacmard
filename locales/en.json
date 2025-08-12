@@ -1,0 +1,90 @@
+{
+    "nav": {
+        "home": "Home",
+        "catalog": "Catalog",
+        "size": "Sizes",
+        "delivery": "Delivery & Payment",
+        "contacts": "Contacts"
+    },
+    "hero": {
+        "title": "Premium Clothing",
+        "subtitle": "and Accessories",
+        "description": "Discover our collection designed with style and comfort"
+    },
+    "cta": {
+        "whatsapp": "Write on WhatsApp",
+        "wb": "View on Wildberries",
+        "whatsapp-float": "Write on WhatsApp",
+        "share": "Share"
+    },
+    "filter": {
+        "all": "All",
+        "hoodies": "Hoodies",
+        "t-shirts": "T-Shirts",
+        "pants": "Pants",
+        "accessories": "Accessories",
+        "size-all": "All Sizes",
+        "color-all": "All Colors",
+        "color-black": "Black",
+        "color-white": "White",
+        "color-gray": "Gray",
+        "color-red": "Red",
+        "color-blue": "Blue",
+        "color-green": "Green",
+        "results": "Results:"
+    },
+    "size": {
+        "title": "Size Guide",
+        "chest": "Chest",
+        "waist": "Waist",
+        "hips": "Hips",
+        "length": "Length",
+        "size": "Size",
+        "tips": "Sizes are shown in centimeters. If you're unsure, we recommend choosing a larger size."
+    },
+    "delivery": {
+        "title": "Delivery & Payment",
+        "yerevan": {
+            "title": "Yerevan",
+            "desc": "Same day or next day"
+        },
+        "regions": {
+            "title": "Regions",
+            "desc": "1-3 days"
+        },
+        "payment": {
+            "title": "Payment",
+            "desc": "Cash or card"
+        },
+        "returns": {
+            "title": "Returns",
+            "desc": "Within 14 days"
+        }
+    },
+    "contacts": {
+        "title": "Contacts",
+        "phone": "Phone",
+        "email": "Email",
+        "instagram": "Instagram",
+        "facebook": "Facebook"
+    },
+    "product": {
+        "size": "Size",
+        "color": "Color"
+    },
+    "badge": {
+        "new": "NEW",
+        "sale": "SALE"
+    },
+    "footer": {
+        "rights": "© 2024 NayacMard Store. All rights reserved."
+    },
+    "search": {
+        "placeholder": "Search products..."
+    },
+    "modal": {
+        "close": "Close",
+        "previous": "Previous",
+        "next": "Next"
+    }
+}
