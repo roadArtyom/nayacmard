@@ -1,0 +1,58 @@
+{
+    "sizeRules": [
+        {
+            "name": "XS",
+            "chest": [76, 84],
+            "waist": [60, 68],
+            "weight": [40, 55],
+            "height": [150, 165],
+            "fit": ["tight", "regular"]
+        },
+        {
+            "name": "S",
+            "chest": [84, 92],
+            "waist": [68, 76],
+            "weight": [55, 65],
+            "height": [160, 170],
+            "fit": ["tight", "regular"]
+        },
+        {
+            "name": "M",
+            "chest": [92, 100],
+            "waist": [76, 84],
+            "weight": [65, 75],
+            "height": [165, 175],
+            "fit": ["regular", "loose"]
+        },
+        {
+            "name": "L",
+            "chest": [100, 108],
+            "waist": [84, 92],
+            "weight": [75, 85],
+            "height": [170, 180],
+            "fit": ["regular", "loose"]
+        },
+        {
+            "name": "XL",
+            "chest": [108, 116],
+            "waist": [92, 100],
+            "weight": [85, 95],
+            "height": [175, 185],
+            "fit": ["regular", "loose"]
+        },
+        {
+            "name": "XXL",
+            "chest": [116, 124],
+            "waist": [100, 108],
+            "weight": [95, 110],
+            "height": [180, 190],
+            "fit": ["loose"]
+        }
+    ],
+    "fitAdjustments": {
+        "tight": -1,
+        "regular": 0,
+        "loose": 1
+    },
+    "sizeOrder": ["XS", "S", "M", "L", "XL", "XXL"]
+}

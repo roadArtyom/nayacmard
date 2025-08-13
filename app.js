@@ -83,7 +83,8 @@ class I18n {
         };
 
         document.title = locales[locale].title;
-        document.querySelector('meta[name="description"]').setAttribute('content', locales[locale].desc);
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.setAttribute('content', locales[locale].desc);
         
         // Update Open Graph tags
         const ogTitle = document.querySelector('meta[property="og:title"]');
@@ -98,7 +99,7 @@ class I18n {
             const key = element.getAttribute('data-i18n');
             const translation = this.getTranslation(key);
             if (translation) {
-                if (element.tagName === 'INPUT' && element.type === 'search') {
+                if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
                     element.placeholder = translation;
                 } else {
                     element.textContent = translation;
@@ -126,7 +127,13 @@ class I18n {
         const buttons = document.querySelectorAll('.language-btn');
         buttons.forEach(btn => {
             const lang = btn.getAttribute('data-lang');
-            btn.classList.toggle('active', lang === this.currentLocale);
+            if (lang === this.currentLocale) {
+                btn.setAttribute('aria-pressed', 'true');
+                btn.classList.add('active');
+            } else {
+                btn.setAttribute('aria-pressed', 'false');
+                btn.classList.remove('active');
+            }
         });
     }
 }
@@ -139,9 +146,9 @@ class ProductManager {
     }
 
     async init() {
-        // Import products from products.js
         try {
-            const { products, filterProducts } = await import('./assets/products.js');
+            // Import products from products.js
+            const { products } = await import('./assets/products.js');
             this.products = products;
             this.filteredProducts = [...products];
             this.renderProducts();
@@ -151,17 +158,17 @@ class ProductManager {
         }
     }
 
-    filterProducts(filters) {
+    filterProducts() {
         let filtered = [...this.products];
         
         // Category filter
-        if (filters.category && filters.category !== 'all') {
-            filtered = filtered.filter(product => product.category === filters.category);
+        if (currentFilters.category && currentFilters.category !== 'all') {
+            filtered = filtered.filter(product => product.category === currentFilters.category);
         }
         
         // Search filter
-        if (filters.search) {
-            const searchTerm = filters.search.toLowerCase();
+        if (currentFilters.search) {
+            const searchTerm = currentFilters.search.toLowerCase();
             filtered = filtered.filter(product => 
                 product.name[currentLanguage].toLowerCase().includes(searchTerm) ||
                 product.description[currentLanguage].toLowerCase().includes(searchTerm)
@@ -169,13 +176,13 @@ class ProductManager {
         }
         
         // Size filter
-        if (filters.size) {
-            filtered = filtered.filter(product => product.sizes.includes(filters.size));
+        if (currentFilters.size) {
+            filtered = filtered.filter(product => product.sizes.includes(currentFilters.size));
         }
         
         // Color filter
-        if (filters.color) {
-            filtered = filtered.filter(product => product.colors.includes(filters.color));
+        if (currentFilters.color) {
+            filtered = filtered.filter(product => product.colors.includes(currentFilters.color));
         }
         
         this.filteredProducts = filtered;
@@ -191,7 +198,7 @@ class ProductManager {
         
         if (this.filteredProducts.length === 0) {
             grid.innerHTML = `
-                <div class="no-results" style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                <div class="no-results" style="grid-column: 1 / -1; text-align: center; padding: var(--space-2xl);">
                     <h3>${i18n.getTranslation('filter.no-results') || 'No products found'}</h3>
                 </div>
             `;
@@ -210,15 +217,15 @@ class ProductManager {
         card.setAttribute('data-product-id', product.id);
         
         const badges = [];
-        if (product.isNew) badges.push(`<span class="badge badge--new">${i18n.getTranslation('badge.new')}</span>`);
-        if (product.isSale) badges.push(`<span class="badge badge--sale">${i18n.getTranslation('badge.sale')}</span>`);
+        if (product.isNew) badges.push('<span class="badge badge--new">NEW</span>');
+        if (product.isSale) badges.push('<span class="badge badge--sale">SALE</span>');
         
         const colorChips = product.colors.map(color => 
-            `<div class="color-chip color-chip--${color}" title="${color}"></div>`
+            `<div class="color-chip color-chip--${color}" data-color="${color}" title="${color}"></div>`
         ).join('');
         
         const sizePills = product.sizes.map(size => 
-            `<span class="size-pill">${size}</span>`
+            `<button class="size-pill" data-size="${size}">${size}</button>`
         ).join('');
         
         card.innerHTML = `
@@ -233,21 +240,27 @@ class ProductManager {
             </div>
             <div class="product-card__content">
                 <h3 class="product-card__title">${product.name[currentLanguage]}</h3>
-                <div class="product-card__price">${product.priceAMD.toLocaleString()} AMD</div>
+                <div class="product-card__price">${product.priceAMD} AMD</div>
                 <div class="product-card__options">
-                    <div class="color-chips">${colorChips}</div>
-                    <div class="size-pills">${sizePills}</div>
+                    <div class="option-group">
+                        <label class="option-label">Size</label>
+                        <div class="size-pills">${sizePills}</div>
+                    </div>
+                    <div class="option-group">
+                        <label class="option-label">Color</label>
+                        <div class="color-chips">${colorChips}</div>
+                    </div>
                 </div>
                 <div class="product-card__actions">
-                    <button class="btn btn--primary" onclick="productModal.open(${product.id})">
-                        ${i18n.getTranslation('cta.whatsapp')}
+                    <button class="btn btn--primary" onclick="openProductModal(${product.id})">
+                        ${i18n.getTranslation('cta.whatsapp') || 'WhatsApp'}
                     </button>
-                    ${product.wildberriesUrl ? 
-                        `<a href="${product.wildberriesUrl}" class="btn btn--outline" target="_blank" rel="noopener">
-                            ${i18n.getTranslation('cta.wb')}
-                        </a>` : ''
-                    }
-                    <button class="btn btn--outline" onclick="productModal.open(${product.id})">
+                    ${product.wildberriesUrl ? `
+                        <a href="${product.wildberriesUrl}" class="btn btn--outline" target="_blank" rel="noopener">
+                            ${i18n.getTranslation('cta.wb') || 'Wildberries'}
+                        </a>
+                    ` : ''}
+                    <button class="btn btn--outline" onclick="openProductModal(${product.id})">
                         ${i18n.getTranslation('cta.details') || 'Details'}
                     </button>
                 </div>
@@ -269,89 +282,237 @@ class ProductManager {
     }
 }
 
-// ===== PRODUCT MODAL =====
-class ProductModal {
+// ===== AI HELPERS =====
+class AIHelpers {
     constructor() {
-        this.modal = document.getElementById('product-modal');
-        this.currentProduct = null;
-        this.currentImageIndex = 0;
-        this.init();
+        this.sizeRules = null;
     }
 
-    init() {
-        // Close modal on overlay click
-        this.modal.querySelector('.modal__overlay').addEventListener('click', () => this.close());
+    async init() {
+        await this.loadSizeRules();
+        this.bindEvents();
+    }
+
+    async loadSizeRules() {
+        try {
+            const response = await fetch('ai/size-rules.json');
+            this.sizeRules = await response.json();
+        } catch (error) {
+            console.warn('Failed to load size rules:', error);
+        }
+    }
+
+    bindEvents() {
+        const getSizeBtn = document.getElementById('get-size-btn');
+        const aiSearchBtn = document.getElementById('ai-search-btn');
         
-        // Close modal on close button click
-        this.modal.querySelector('.modal__close').addEventListener('click', () => this.close());
+        if (getSizeBtn) {
+            getSizeBtn.addEventListener('click', () => this.getSizeRecommendation());
+        }
         
-        // Close modal on Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !this.modal.hidden) {
-                this.close();
+        if (aiSearchBtn) {
+            aiSearchBtn.addEventListener('click', () => this.performAISearch());
+        }
+    }
+
+    getSizeRecommendation() {
+        const height = parseInt(document.getElementById('height-input').value);
+        const weight = parseInt(document.getElementById('weight-input').value);
+        const fitPreference = document.getElementById('fit-preference').value;
+        const resultDiv = document.getElementById('size-result');
+        
+        if (!height || !weight) {
+            resultDiv.innerHTML = `<p style="color: #e74c3c;">${i18n.getTranslation('ai.size.error') || 'Please enter valid measurements'}</p>`;
+            resultDiv.hidden = false;
+            return;
+        }
+        
+        if (!this.sizeRules) {
+            resultDiv.innerHTML = '<p style="color: #e74c3c;">Size rules not available</p>';
+            resultDiv.hidden = false;
+            return;
+        }
+        
+        // Simple rule-based size recommendation
+        let recommendedSize = this.calculateSize(height, weight, fitPreference);
+        
+        resultDiv.innerHTML = `
+            <p style="color: #27ae60;">
+                ${i18n.getTranslation('ai.size.result')?.replace('{size}', recommendedSize) || `Recommended size: ${recommendedSize}`}
+            </p>
+        `;
+        resultDiv.hidden = false;
+    }
+
+    calculateSize(height, weight, fitPreference) {
+        // Simple BMI-based calculation
+        const heightM = height / 100;
+        const bmi = weight / (heightM * heightM);
+        
+        let baseSize = 'M';
+        
+        if (height < 160) {
+            baseSize = bmi < 20 ? 'XS' : 'S';
+        } else if (height < 170) {
+            baseSize = bmi < 20 ? 'S' : 'M';
+        } else if (height < 180) {
+            baseSize = bmi < 20 ? 'M' : 'L';
+        } else {
+            baseSize = bmi < 20 ? 'L' : 'XL';
+        }
+        
+        // Adjust based on fit preference
+        const sizeOrder = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+        let sizeIndex = sizeOrder.indexOf(baseSize);
+        
+        if (fitPreference === 'tight' && sizeIndex > 0) sizeIndex--;
+        if (fitPreference === 'loose' && sizeIndex < sizeOrder.length - 1) sizeIndex++;
+        
+        return sizeOrder[sizeIndex];
+    }
+
+    performAISearch() {
+        const searchInput = document.getElementById('ai-search-input').value;
+        const resultDiv = document.getElementById('ai-search-result');
+        
+        if (!searchInput.trim()) {
+            resultDiv.innerHTML = `<p style="color: #e74c3c;">Please enter a search term</p>`;
+            resultDiv.hidden = false;
+            return;
+        }
+        
+        // Simple fuzzy search
+        const results = this.fuzzySearch(searchInput);
+        
+        if (results.length === 0) {
+            resultDiv.innerHTML = `<p style="color: #e74c3c;">${i18n.getTranslation('ai.search.no-results') || 'No results found'}</p>`;
+        } else {
+            resultDiv.innerHTML = `
+                <p style="color: #27ae60;">
+                    ${i18n.getTranslation('ai.search.results-found')?.replace('{count}', results.length) || `Found ${results.length} products`}
+                </p>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    ${results.slice(0, 5).map(product => 
+                        `<li>${product.name[currentLanguage]} - ${product.priceAMD} AMD</li>`
+                    ).join('')}
+                </ul>
+            `;
+        }
+        
+        resultDiv.hidden = false;
+    }
+
+    fuzzySearch(query) {
+        const searchTerm = query.toLowerCase();
+        const results = [];
+        
+        productManager.products.forEach(product => {
+            const name = product.name[currentLanguage].toLowerCase();
+            const description = product.description[currentLanguage].toLowerCase();
+            
+            // Simple fuzzy matching
+            if (name.includes(searchTerm) || description.includes(searchTerm)) {
+                results.push(product);
+            } else {
+                // Check for partial matches
+                const words = searchTerm.split(' ');
+                const nameWords = name.split(' ');
+                const descWords = description.split(' ');
+                
+                const nameMatch = words.some(word => 
+                    nameWords.some(nw => nw.includes(word))
+                );
+                const descMatch = words.some(word => 
+                    descWords.some(dw => dw.includes(word))
+                );
+                
+                if (nameMatch || descMatch) {
+                    results.push(product);
+                }
             }
         });
         
-        // Navigation buttons
-        this.modal.querySelector('.gallery__nav--prev').addEventListener('click', () => this.previousImage());
-        this.modal.querySelector('.gallery__nav--next').addEventListener('click', () => this.nextImage());
-        
-        // WhatsApp button
-        this.modal.querySelector('#modal-whatsapp-btn').addEventListener('click', () => this.openWhatsApp());
-        
-        // Wildberries button
-        this.modal.querySelector('#modal-wb-btn').addEventListener('click', () => this.openWildberries());
-        
-        // Share button
-        this.modal.querySelector('#modal-share-btn').addEventListener('click', () => this.shareProduct());
+        return results;
+    }
+}
+
+// ===== MODAL MANAGEMENT =====
+class ModalManager {
+    constructor() {
+        this.modal = null;
+        this.currentProduct = null;
+        this.currentImageIndex = 0;
     }
 
-    open(productId) {
-        const product = productManager.getProductById(productId);
-        if (!product) return;
+    init() {
+        this.modal = document.getElementById('product-modal');
+        this.bindEvents();
+    }
 
+    bindEvents() {
+        const closeBtn = this.modal?.querySelector('.modal__close');
+        const overlay = this.modal?.querySelector('.modal__overlay');
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => this.closeModal());
+        }
+        
+        if (overlay) {
+            overlay.addEventListener('click', () => this.closeModal());
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.modal && !this.modal.hidden) {
+                this.closeModal();
+            }
+        });
+    }
+
+    openModal(productId) {
+        const product = productManager.getProductById(productId);
+        if (!product || !this.modal) return;
+        
         this.currentProduct = product;
         this.currentImageIndex = 0;
         
         this.updateModalContent();
-        this.showModal();
+        this.modal.hidden = false;
+        document.body.style.overflow = 'hidden';
         
         // Focus trap
         this.setupFocusTrap();
     }
 
-    close() {
-        this.hideModal();
+    closeModal() {
+        if (!this.modal) return;
+        
+        this.modal.hidden = true;
+        document.body.style.overflow = '';
         this.currentProduct = null;
-        this.currentImageIndex = 0;
         
         // Remove focus trap
         this.removeFocusTrap();
     }
 
-    showModal() {
-        this.modal.hidden = false;
-        document.body.style.overflow = 'hidden';
-        
-        // Focus first focusable element
-        const firstFocusable = this.modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-        if (firstFocusable) firstFocusable.focus();
-    }
-
-    hideModal() {
-        this.modal.hidden = true;
-        document.body.style.overflow = '';
-    }
-
     updateModalContent() {
+        if (!this.currentProduct) return;
+        
         const product = this.currentProduct;
         
         // Update title and description
-        this.modal.querySelector('#modal-title').textContent = product.name[currentLanguage];
-        this.modal.querySelector('#modal-description').textContent = product.description[currentLanguage];
+        const title = this.modal.querySelector('#modal-title');
+        const description = this.modal.querySelector('#modal-description');
+        
+        if (title) title.textContent = product.name[currentLanguage];
+        if (description) description.textContent = product.description[currentLanguage];
         
         // Update main image
-        this.updateMainImage();
+        const mainImage = this.modal.querySelector('#modal-main-image');
+        if (mainImage && product.images.length > 0) {
+            mainImage.src = product.images[this.currentImageIndex];
+            mainImage.alt = product.name[currentLanguage];
+        }
         
         // Update thumbnails
         this.updateThumbnails();
@@ -362,133 +523,148 @@ class ProductModal {
         // Update color chips
         this.updateColorChips();
         
-        // Show/hide Wildberries button
-        const wbBtn = this.modal.querySelector('#modal-wb-btn');
-        if (product.wildberriesUrl) {
-            wbBtn.style.display = 'block';
-            wbBtn.onclick = () => window.open(product.wildberriesUrl, '_blank');
-        } else {
-            wbBtn.style.display = 'none';
-        }
-    }
-
-    updateMainImage() {
-        const product = this.currentProduct;
-        const mainImage = this.modal.querySelector('#modal-main-image');
-        mainImage.src = product.images[this.currentImageIndex];
-        mainImage.alt = product.name[currentLanguage];
+        // Update action buttons
+        this.updateActionButtons();
     }
 
     updateThumbnails() {
-        const product = this.currentProduct;
         const thumbnailsContainer = this.modal.querySelector('#modal-thumbnails');
+        if (!thumbnailsContainer || !this.currentProduct) return;
         
-        thumbnailsContainer.innerHTML = product.images.map((image, index) => `
-            <img src="${image}" 
-                 alt="${product.name[currentLanguage]} - ${index + 1}" 
-                 class="${index === this.currentImageIndex ? 'active' : ''}"
-                 onclick="productModal.goToImage(${index})"
-                 width="60" 
-                 height="60">
-        `).join('');
+        thumbnailsContainer.innerHTML = '';
+        
+        this.currentProduct.images.forEach((image, index) => {
+            const thumbnail = document.createElement('div');
+            thumbnail.className = `gallery__thumbnail ${index === this.currentImageIndex ? 'active' : ''}`;
+            thumbnail.onclick = () => this.changeImage(index);
+            
+            const img = document.createElement('img');
+            img.src = image;
+            img.alt = `${this.currentProduct.name[currentLanguage]} - Image ${index + 1}`;
+            img.loading = 'lazy';
+            
+            thumbnail.appendChild(img);
+            thumbnailsContainer.appendChild(thumbnail);
+        });
     }
 
     updateSizePills() {
-        const product = this.currentProduct;
         const sizePillsContainer = this.modal.querySelector('#modal-size-pills');
+        if (!sizePillsContainer || !this.currentProduct) return;
         
-        sizePillsContainer.innerHTML = product.sizes.map(size => `
-            <span class="size-pill" onclick="productModal.selectSize('${size}')">${size}</span>
-        `).join('');
+        sizePillsContainer.innerHTML = '';
+        
+        this.currentProduct.sizes.forEach(size => {
+            const pill = document.createElement('button');
+            pill.className = 'size-pill';
+            pill.textContent = size;
+            pill.onclick = () => this.selectSize(size);
+            sizePillsContainer.appendChild(pill);
+        });
     }
 
     updateColorChips() {
-        const product = this.currentProduct;
         const colorChipsContainer = this.modal.querySelector('#modal-color-chips');
+        if (!colorChipsContainer || !this.currentProduct) return;
         
-        colorChipsContainer.innerHTML = product.colors.map(color => `
-            <div class="color-chip color-chip--${color}" 
-                 onclick="productModal.selectColor('${color}')" 
-                 title="${color}"></div>
-        `).join('');
+        colorChipsContainer.innerHTML = '';
+        
+        this.currentProduct.colors.forEach(color => {
+            const chip = document.createElement('div');
+            chip.className = `color-chip color-chip--${color}`;
+            chip.setAttribute('data-color', color);
+            chip.onclick = () => this.selectColor(color);
+            colorChipsContainer.appendChild(chip);
+        });
     }
 
-    goToImage(index) {
+    updateActionButtons() {
+        const whatsappBtn = this.modal.querySelector('#modal-whatsapp-btn');
+        const wbBtn = this.modal.querySelector('#modal-wb-btn');
+        const shareBtn = this.modal.querySelector('#modal-share-btn');
+        
+        if (whatsappBtn) {
+            whatsappBtn.onclick = () => this.openWhatsApp();
+        }
+        
+        if (wbBtn && this.currentProduct.wildberriesUrl) {
+            wbBtn.style.display = 'block';
+            wbBtn.onclick = () => window.open(this.currentProduct.wildberriesUrl, '_blank');
+        } else if (wbBtn) {
+            wbBtn.style.display = 'none';
+        }
+        
+        if (shareBtn) {
+            shareBtn.onclick = () => this.shareProduct();
+        }
+    }
+
+    changeImage(index) {
+        if (!this.currentProduct || index < 0 || index >= this.currentProduct.images.length) return;
+        
         this.currentImageIndex = index;
-        this.updateMainImage();
-        this.updateThumbnails();
-    }
-
-    previousImage() {
-        const product = this.currentProduct;
-        this.currentImageIndex = (this.currentImageIndex - 1 + product.images.length) % product.images.length;
-        this.updateMainImage();
-        this.updateThumbnails();
-    }
-
-    nextImage() {
-        const product = this.currentProduct;
-        this.currentImageIndex = (this.currentImageIndex + 1) % product.images.length;
-        this.updateMainImage();
-        this.updateThumbnails();
+        
+        // Update main image
+        const mainImage = this.modal.querySelector('#modal-main-image');
+        if (mainImage) {
+            mainImage.src = this.currentProduct.images[index];
+        }
+        
+        // Update thumbnail selection
+        const thumbnails = this.modal.querySelectorAll('.gallery__thumbnail');
+        thumbnails.forEach((thumb, i) => {
+            thumb.classList.toggle('active', i === index);
+        });
     }
 
     selectSize(size) {
         // Update size selection UI
-        const pills = this.modal.querySelectorAll('#modal-size-pills .size-pill');
-        pills.forEach(pill => pill.classList.remove('selected'));
-        event.target.classList.add('selected');
+        const pills = this.modal.querySelectorAll('.size-pill');
+        pills.forEach(pill => {
+            pill.classList.toggle('selected', pill.textContent === size);
+        });
     }
 
     selectColor(color) {
         // Update color selection UI
-        const chips = this.modal.querySelectorAll('#modal-color-chips .color-chip');
-        chips.forEach(chip => chip.classList.remove('selected'));
-        event.target.classList.add('selected');
+        const chips = this.modal.querySelectorAll('.color-chip');
+        chips.forEach(chip => {
+            chip.classList.toggle('selected', chip.getAttribute('data-color') === color);
+        });
     }
 
     openWhatsApp() {
         const product = this.currentProduct;
-        const selectedSize = this.modal.querySelector('#modal-size-pills .size-pill.selected')?.textContent || '';
-        const selectedColor = this.modal.querySelector('#modal-color-chips .color-chip.selected')?.classList.contains('selected') ? 
-            this.modal.querySelector('#modal-color-chips .color-chip.selected').classList[1].replace('color-chip--', '') : '';
+        if (!product) return;
         
-        let message = `Բարև, ուզում եմ պատվիրել — ${product.name.hy}`;
-        if (selectedSize) message += ` (Չափ: ${selectedSize})`;
-        if (selectedColor) message += ` (Գույն: ${selectedColor})`;
-        message += ` - ${product.priceAMD.toLocaleString()} AMD`;
-        
+        const message = `Hi! I'm interested in ${product.name[currentLanguage]} (${product.priceAMD} AMD)`;
         const whatsappUrl = `https://wa.me/374XXXXXXXXX?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
     }
 
-    openWildberries() {
-        if (this.currentProduct?.wildberriesUrl) {
-            window.open(this.currentProduct.wildberriesUrl, '_blank');
-        }
-    }
-
     async shareProduct() {
         const product = this.currentProduct;
+        if (!product) return;
+        
+        const shareData = {
+            title: product.name[currentLanguage],
+            text: product.description[currentLanguage],
+            url: window.location.href
+        };
         
         if (navigator.share) {
             try {
-                await navigator.share({
-                    title: product.name[currentLanguage],
-                    text: product.description[currentLanguage],
-                    url: window.location.href
-                });
+                await navigator.share(shareData);
             } catch (error) {
-                console.log('Error sharing:', error);
+                console.log('Share cancelled:', error);
             }
         } else {
             // Fallback: copy to clipboard
-            const url = window.location.href;
             try {
-                await navigator.clipboard.writeText(url);
+                await navigator.clipboard.writeText(`${shareData.title} - ${shareData.url}`);
                 alert('Link copied to clipboard!');
             } catch (error) {
-                console.log('Error copying to clipboard:', error);
+                console.error('Failed to copy:', error);
             }
         }
     }
@@ -497,6 +673,8 @@ class ProductModal {
         const focusableElements = this.modal.querySelectorAll(
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
         );
+        
+        if (focusableElements.length === 0) return;
         
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
@@ -516,6 +694,8 @@ class ProductModal {
                 }
             }
         });
+        
+        firstElement.focus();
     }
 
     removeFocusTrap() {
@@ -523,17 +703,68 @@ class ProductModal {
     }
 }
 
-// ===== FILTERS & SEARCH =====
-class FilterManager {
+// ===== MOBILE MENU =====
+class MobileMenu {
     constructor() {
-        this.init();
+        this.menuButton = null;
+        this.nav = null;
+        this.isOpen = false;
     }
 
     init() {
+        this.menuButton = document.querySelector('.header__mobile-menu');
+        this.nav = document.querySelector('.header__nav');
+        
+        if (this.menuButton) {
+            this.menuButton.addEventListener('click', () => this.toggle());
+        }
+        
+        // Close menu when clicking on nav links
+        const navLinks = this.nav?.querySelectorAll('.header__nav-link');
+        navLinks?.forEach(link => {
+            link.addEventListener('click', () => this.close());
+        });
+    }
+
+    toggle() {
+        if (this.isOpen) {
+            this.close();
+        } else {
+            this.open();
+        }
+    }
+
+    open() {
+        if (!this.menuButton || !this.nav) return;
+        
+        this.isOpen = true;
+        this.menuButton.setAttribute('aria-expanded', 'true');
+        this.nav.classList.add('mobile-open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    close() {
+        if (!this.menuButton || !this.nav) return;
+        
+        this.isOpen = false;
+        this.menuButton.setAttribute('aria-expanded', 'false');
+        this.nav.classList.remove('mobile-open');
+        document.body.style.overflow = '';
+    }
+}
+
+// ===== FILTERS =====
+class FilterManager {
+    constructor() {
+        this.bindEvents();
+    }
+
+    bindEvents() {
         // Category chips
-        document.querySelectorAll('.category-chip').forEach(chip => {
-            chip.addEventListener('click', (e) => {
-                this.updateCategoryFilter(e.target.getAttribute('data-category'));
+        const categoryChips = document.querySelectorAll('.category-chip');
+        categoryChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                this.updateCategoryFilter(chip.dataset.category);
             });
         });
         
@@ -564,280 +795,247 @@ class FilterManager {
 
     updateCategoryFilter(category) {
         // Update active state
-        document.querySelectorAll('.category-chip').forEach(chip => {
-            chip.classList.toggle('active', chip.getAttribute('data-category') === category);
+        const chips = document.querySelectorAll('.category-chip');
+        chips.forEach(chip => {
+            chip.classList.toggle('active', chip.dataset.category === category);
         });
         
         currentFilters.category = category;
-        this.applyFilters();
+        productManager.filterProducts();
     }
 
     updateSearchFilter(search) {
         currentFilters.search = search;
-        this.applyFilters();
+        productManager.filterProducts();
     }
 
     updateSizeFilter(size) {
         currentFilters.size = size;
-        this.applyFilters();
+        productManager.filterProducts();
     }
 
     updateColorFilter(color) {
         currentFilters.color = color;
-        this.applyFilters();
-    }
-
-    applyFilters() {
-        productManager.filterProducts(currentFilters);
+        productManager.filterProducts();
     }
 }
 
-// ===== SCROLL SPY & SMOOTH SCROLLING =====
-class ScrollManager {
+// ===== PWA REGISTRATION =====
+class PWAManager {
     constructor() {
-        this.init();
+        this.deferredPrompt = null;
     }
 
     init() {
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = document.querySelector(anchor.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-        
-        // Scroll spy for navigation
-        this.setupScrollSpy();
-        
-        // Intersection Observer for animations
-        this.setupIntersectionObserver();
+        this.registerServiceWorker();
+        this.bindEvents();
     }
 
-    setupScrollSpy() {
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.header__nav-link');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const id = entry.target.getAttribute('id');
-                    this.updateActiveNavLink(id);
-                }
-            });
-        }, {
-            threshold: 0.3,
-            rootMargin: '-80px 0px -80% 0px'
-        });
-        
-        sections.forEach(section => observer.observe(section));
-    }
-
-    updateActiveNavLink(activeId) {
-        navLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href === `#${activeId}`) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
+    async registerServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            try {
+                const registration = await navigator.serviceWorker.register('/sw.js');
+                console.log('Service Worker registered:', registration);
+            } catch (error) {
+                console.error('Service Worker registration failed:', error);
             }
-        });
+        }
     }
 
-    setupIntersectionObserver() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+    bindEvents() {
+        // Listen for beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            this.deferredPrompt = e;
+            
+            // Show install button or banner
+            this.showInstallPrompt();
         });
         
-        // Observe elements for animation
-        document.querySelectorAll('.product-card, .delivery__item, .contact-item').forEach(el => {
-            observer.observe(el);
-        });
-    }
-}
-
-// ===== MOBILE MENU =====
-class MobileMenu {
-    constructor() {
-        this.menuButton = document.querySelector('.header__mobile-menu');
-        this.nav = document.querySelector('.header__nav');
-        this.init();
-    }
-
-    init() {
-        this.menuButton.addEventListener('click', () => this.toggle());
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!this.menuButton.contains(e.target) && !this.nav.contains(e.target)) {
-                this.close();
-            }
+        // Listen for app installed event
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            this.deferredPrompt = null;
         });
     }
 
-    toggle() {
-        const isExpanded = this.menuButton.getAttribute('aria-expanded') === 'true';
-        this.menuButton.setAttribute('aria-expanded', !isExpanded);
+    showInstallPrompt() {
+        // You can show a custom install button here
+        console.log('PWA install prompt available');
+    }
+
+    async promptInstall() {
+        if (!this.deferredPrompt) return;
         
-        if (isExpanded) {
-            this.close();
+        this.deferredPrompt.prompt();
+        const { outcome } = await this.deferredPrompt.userChoice;
+        
+        if (outcome === 'accepted') {
+            console.log('User accepted the install prompt');
         } else {
-            this.open();
+            console.log('User dismissed the install prompt');
         }
-    }
-
-    open() {
-        this.nav.classList.add('mobile-open');
-        this.menuButton.classList.add('active');
-    }
-
-    close() {
-        this.nav.classList.remove('mobile-open');
-        this.menuButton.classList.remove('active');
+        
+        this.deferredPrompt = null;
     }
 }
 
-// ===== UTILITIES =====
-class Utils {
-    static formatPrice(price) {
-        return price.toLocaleString('hy-AM') + ' AMD';
+// ===== INTEGRATION TESTS =====
+class IntegrationTests {
+    static async runTests() {
+        console.log('Running integration tests...');
+        
+        // Test language button functionality
+        await this.testLanguageButtons();
+        
+        // Test mobile menu functionality
+        await this.testMobileMenu();
+        
+        console.log('Integration tests completed');
     }
-    
-    static debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-    
-    static throttle(func, limit) {
-        let inThrottle;
-        return function() {
-            const args = arguments;
-            const context = this;
-            if (!inThrottle) {
-                func.apply(context, args);
-                inThrottle = true;
-                setTimeout(() => inThrottle = false, limit);
+
+    static async testLanguageButtons() {
+        const languageButtons = document.querySelectorAll('.language-btn');
+        
+        for (const button of languageButtons) {
+            try {
+                // Simulate click
+                button.click();
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                // Check if aria-pressed is updated
+                const isPressed = button.getAttribute('aria-pressed') === 'true';
+                if (!isPressed) {
+                    console.error('Language button aria-pressed not updated correctly');
+                }
+                
+                // Check if HTML lang attribute is updated
+                const htmlLang = document.documentElement.lang;
+                const buttonLang = button.getAttribute('data-lang');
+                if (htmlLang !== buttonLang) {
+                    console.error('HTML lang attribute not updated correctly');
+                }
+                
+            } catch (error) {
+                console.error('Language button test failed:', error);
             }
         }
     }
+
+    static async testMobileMenu() {
+        const menuButton = document.querySelector('.header__mobile-menu');
+        if (!menuButton) return;
+        
+        try {
+            // Test opening menu
+            menuButton.click();
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+            if (!isExpanded) {
+                console.error('Mobile menu not opening correctly');
+            }
+            
+            // Test closing menu
+            menuButton.click();
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            const isClosed = menuButton.getAttribute('aria-expanded') === 'false';
+            if (!isClosed) {
+                console.error('Mobile menu not closing correctly');
+            }
+            
+        } catch (error) {
+            console.error('Mobile menu test failed:', error);
+        }
+    }
+}
+
+// ===== GLOBAL INSTANCES =====
+const i18n = new I18n();
+const productManager = new ProductManager();
+const aiHelpers = new AIHelpers();
+const modalManager = new ModalManager();
+const mobileMenu = new MobileMenu();
+const filterManager = new FilterManager();
+const pwaManager = new PWAManager();
+
+// ===== GLOBAL FUNCTIONS =====
+function openProductModal(productId) {
+    modalManager.openModal(productId);
 }
 
 // ===== INITIALIZATION =====
-let i18n, productManager, productModal, filterManager, scrollManager, mobileMenu;
-
-async function init() {
+document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // Initialize internationalization
-        i18n = new I18n();
+        // Initialize all components
         await i18n.init();
-        
-        // Initialize components
-        productManager = new ProductManager();
-        productModal = new ProductModal();
-        filterManager = new FilterManager();
-        scrollManager = new ScrollManager();
-        mobileMenu = new MobileMenu();
-        
-        // Initialize products
         await productManager.init();
+        await aiHelpers.init();
+        modalManager.init();
+        mobileMenu.init();
+        filterManager.init();
+        pwaManager.init();
         
-        // Setup language switcher
-        setupLanguageSwitcher();
-        
-        // Setup WhatsApp float button
-        setupWhatsAppFloat();
-        
-        // Setup scroll-driven animations (progressive enhancement)
-        setupScrollAnimations();
+        // Run integration tests
+        await IntegrationTests.runTests();
         
         console.log('NayacMard Store initialized successfully');
         
     } catch (error) {
         console.error('Failed to initialize NayacMard Store:', error);
     }
-}
+});
 
-function setupLanguageSwitcher() {
-    document.querySelectorAll('.language-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-            const lang = btn.getAttribute('data-lang');
+// ===== LANGUAGE SWITCHER EVENT LISTENERS =====
+document.addEventListener('DOMContentLoaded', () => {
+    const languageButtons = document.querySelectorAll('.language-btn');
+    
+    languageButtons.forEach(button => {
+        button.addEventListener('click', async () => {
+            const lang = button.getAttribute('data-lang');
             await i18n.setLanguage(lang);
-            
-            // Re-render products with new language
-            if (productManager) {
-                productManager.renderProducts();
+        });
+    });
+});
+
+// ===== INTERSECTION OBSERVER FOR ANIMATIONS =====
+if ('IntersectionObserver' in window) {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
             }
         });
+    }, observerOptions);
+    
+    // Observe elements for animation
+    document.addEventListener('DOMContentLoaded', () => {
+        const animatedElements = document.querySelectorAll('.product-card, .delivery__item, .contact-item');
+        animatedElements.forEach(el => observer.observe(el));
     });
 }
 
-function setupWhatsAppFloat() {
-    const whatsappFloat = document.querySelector('.whatsapp-float');
-    if (whatsappFloat) {
-        whatsappFloat.addEventListener('click', (e) => {
-            e.preventDefault();
-            const message = encodeURIComponent('Բարև, ուզում եմ տեղեկություն ստանալ NayacMard Store-ի մասին');
-            window.open(`https://wa.me/374XXXXXXXXX?text=${message}`, '_blank');
-        });
-    }
-}
-
-function setupScrollAnimations() {
-    // Progressive enhancement: Scroll-driven animations
-    if (CSS.supports('scroll-timeline: --page-scroll block')) {
-        document.documentElement.style.setProperty('--page-scroll', 'block');
-        
-        // Add scroll timeline to hero image
-        const heroImage = document.querySelector('.hero__image img');
-        if (heroImage) {
-            heroImage.style.setProperty('--parallax-depth', '50');
-        }
-    }
-}
-
-// ===== EVENT LISTENERS =====
-document.addEventListener('DOMContentLoaded', init);
-
-// Handle view transitions API (progressive enhancement)
+// ===== VIEW TRANSITIONS API SUPPORT =====
 if ('startViewTransition' in document) {
+    // Enable view transitions for navigation
     document.addEventListener('click', (e) => {
-        if (e.target.matches('a[href^="#"]')) {
+        const link = e.target.closest('a[href^="#"]');
+        if (link) {
             e.preventDefault();
-            const target = document.querySelector(e.target.getAttribute('href'));
-            if (target) {
-                document.startViewTransition(() => {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                });
-            }
+            
+            document.startViewTransition(() => {
+                const targetId = link.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
         }
     });
 }
-
-// Handle reduced motion preference
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.documentElement.classList.add('reduced-motion');
-}
-
-// ===== EXPORTS FOR GLOBAL ACCESS =====
-window.productModal = null; // Will be set after initialization
-window.productManager = null; // Will be set after initialization

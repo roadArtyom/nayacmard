@@ -1,0 +1,21 @@
+# android-chrome-512x512.png - PNG File Placeholder
+
+This is a placeholder for the android-chrome-512x512.png file.
+
+## What to do:
+1. Use the favicon.svg file as source
+2. Generate a PNG file at 512x512 pixels
+3. Replace this placeholder file
+
+## Generation tools:
+- favicon.io
+- realfavicongenerator.net
+- ImageMagick: convert favicon.svg -resize 512x512 android-chrome-512x512.png
+- Design software (Figma, Sketch, Illustrator)
+
+## File requirements:
+- Format: PNG
+- Size: 512x512 pixels
+- Colors: Use brand colors (#111, #FF5A5F)
+- Quality: High quality, no compression artifacts
+- Purpose: Android Chrome icon (high resolution)

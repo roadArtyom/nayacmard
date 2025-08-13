@@ -1,0 +1,20 @@
+# favicon.ico - Binary File Placeholder
+
+This is a placeholder for the favicon.ico file.
+
+## What to do:
+1. Use the favicon.svg file as source
+2. Generate a favicon.ico file with multiple sizes (16x16, 32x32, 48x48)
+3. Replace this placeholder file
+
+## Generation tools:
+- favicon.io
+- realfavicongenerator.net
+- ImageMagick command line
+- Design software (Figma, Sketch, Illustrator)
+
+## File requirements:
+- Format: ICO (Windows icon format)
+- Sizes: 16x16, 32x32, 48x48 pixels
+- Colors: Use brand colors (#111, #FF5A5F)
+- Quality: High quality, no compression artifacts

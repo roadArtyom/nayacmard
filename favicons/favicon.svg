@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <style>
+      .logo-text { fill: #111; font-family: system-ui, sans-serif; font-weight: 700; font-size: 8px; }
+      .logo-accent { fill: #FF5A5F; font-family: system-ui, sans-serif; font-weight: 700; font-size: 8px; }
+    </style>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="16" cy="16" r="15" fill="#FFFFFF" stroke="#111" stroke-width="1"/>
+  
+  <!-- N -->
+  <text x="8" y="22" class="logo-text">N</text>
+  
+  <!-- Store (accent color) -->
+  <text x="12" y="22" class="logo-accent">S</text>
+</svg>

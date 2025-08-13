@@ -2,7 +2,7 @@
     "nav": {
         "home": "Home",
         "catalog": "Catalog",
-        "size": "Sizes",
+        "size": "Size Guide",
         "delivery": "Delivery & Payment",
         "contacts": "Contacts"
     },
@@ -27,10 +27,6 @@
         "color-all": "All Colors",
         "color-black": "Black",
         "color-white": "White",
-        "color-gray": "Gray",
-        "color-red": "Red",
-        "color-blue": "Blue",
-        "color-green": "Green",
         "results": "Results:"
     },
     "size": {
@@ -40,7 +36,7 @@
         "hips": "Hips",
         "length": "Length",
         "size": "Size",
-        "tips": "Sizes are shown in centimeters. If you're unsure, we recommend choosing a larger size."
+        "tips": "Sizes are shown in centimeters. If in doubt, we recommend choosing a larger size."
     },
     "delivery": {
         "title": "Delivery & Payment",
@@ -73,8 +69,8 @@
         "color": "Color"
     },
     "badge": {
-        "new": "NEW",
-        "sale": "SALE"
+        "new": "New",
+        "sale": "Sale"
     },
     "footer": {
         "rights": "© 2024 NayacMard Store. All rights reserved."
@@ -86,5 +82,24 @@
         "close": "Close",
         "previous": "Previous",
         "next": "Next"
+    },
+    "ai": {
+        "size": {
+            "title": "AI Size Helper",
+            "description": "Enter your measurements and get a recommendation",
+            "fit-regular": "Regular",
+            "fit-loose": "Loose",
+            "fit-tight": "Tight",
+            "get-size": "Get Size",
+            "result": "Recommended size: {size}",
+            "error": "Please enter valid measurements"
+        },
+        "search": {
+            "title": "AI Search",
+            "description": "Smart search through products",
+            "search": "Search",
+            "no-results": "No results found",
+            "results-found": "Found {count} products"
+        }
     }
 }

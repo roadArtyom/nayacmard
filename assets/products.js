@@ -1,5 +1,6 @@
 // Products data for NayacMard Store
 // Each product has multilingual names and descriptions
+// IMPORTANT: Only black and white colors are allowed
 export const products = [
     {
         id: 1,
@@ -10,7 +11,7 @@ export const products = [
         },
         priceAMD: 25000,
         category: "hoodies",
-        colors: ["black", "white", "gray"],
+        colors: ["black", "white"],
         sizes: ["S", "M", "L", "XL"],
         images: ["images/5352689841629951197.jpg", "images/5352689841629951198.jpg", "images/5352689841629951199.jpg"],
         wildberriesUrl: "https://wildberries.am/product/classic-hoodie",
@@ -31,7 +32,7 @@ export const products = [
         },
         priceAMD: 15000,
         category: "t-shirts",
-        colors: ["black", "white", "red", "blue"],
+        colors: ["black", "white"],
         sizes: ["XS", "S", "M", "L", "XL", "XXL"],
         images: ["images/5352689841629951200.jpg", "images/5352689841629951201.jpg"],
         wildberriesUrl: null,
@@ -52,7 +53,7 @@ export const products = [
         },
         priceAMD: 35000,
         category: "pants",
-        colors: ["blue", "black", "gray"],
+        colors: ["black", "white"],
         sizes: ["S", "M", "L", "XL"],
         images: ["images/5352689841629951202.jpg", "images/5352689841629951203.jpg", "images/5352689841629951204.jpg"],
         wildberriesUrl: "https://wildberries.am/product/denim-pants",
@@ -73,7 +74,7 @@ export const products = [
         },
         priceAMD: 28000,
         category: "hoodies",
-        colors: ["red", "blue", "green"],
+        colors: ["black", "white"],
         sizes: ["M", "L", "XL", "XXL"],
         images: ["images/5352689841629951205.jpg", "images/5352689841629951206.jpg"],
         wildberriesUrl: null,
@@ -94,7 +95,7 @@ export const products = [
         },
         priceAMD: 12000,
         category: "t-shirts",
-        colors: ["white", "black", "gray"],
+        colors: ["white", "black"],
         sizes: ["XS", "S", "M", "L", "XL"],
         images: ["images/5352689841629951207.jpg", "images/5352689841629951209.jpg"],
         wildberriesUrl: "https://wildberries.am/product/basic-tshirt",
@@ -115,7 +116,7 @@ export const products = [
         },
         priceAMD: 18000,
         category: "accessories",
-        colors: ["black", "brown"],
+        colors: ["black", "white"],
         sizes: ["One Size"],
         images: ["images/5352689841629951210.jpg", "images/5352689841629951211.jpg"],
         wildberriesUrl: null,
@@ -136,7 +137,7 @@ export const products = [
         },
         priceAMD: 42000,
         category: "pants",
-        colors: ["black", "gray", "navy"],
+        colors: ["black", "white"],
         sizes: ["S", "M", "L", "XL"],
         images: ["images/5352689841629951319.jpg", "images/5352689841629951320.jpg"],
         wildberriesUrl: "https://wildberries.am/product/elegant-pants",
@@ -151,20 +152,20 @@ export const products = [
     {
         id: 8,
         name: {
-            hy: "Կապույտ Hoodie",
-            en: "Blue Hoodie",
-            ru: "Синее Худи"
+            hy: "Կլասիկ Hoodie",
+            en: "Classic Hoodie",
+            ru: "Классическое Худи"
         },
         priceAMD: 26000,
         category: "hoodies",
-        colors: ["blue", "navy", "light-blue"],
+        colors: ["black", "white"],
         sizes: ["S", "M", "L", "XL", "XXL"],
         images: ["images/5352689841629951321.jpg", "images/5352689841629951322.jpg", "images/5352689841629951323.jpg"],
         wildberriesUrl: null,
         description: {
-            hy: "Կապույտ գույնի hoodie՝ հարմարավետ նյութից: Կատարյալ է սառը եղանակի համար:",
-            en: "Blue colored hoodie made from comfortable material. Perfect for cold weather.",
-            ru: "Синее худи из комфортного материала. Идеально подходит для холодной погоды."
+            hy: "Կլասիկ գույնի hoodie՝ հարմարավետ նյութից: Կատարյալ է սառը եղանակի համար:",
+            en: "Classic colored hoodie made from comfortable material. Perfect for cold weather.",
+            ru: "Классическое худи из комфортного материала. Идеально подходит для холодной погоды."
         },
         isNew: false,
         isSale: false
@@ -234,10 +235,9 @@ export function getCategories() {
     return [...new Set(products.map(product => product.category))];
 }
 
-// Helper function to get unique colors
+// Helper function to get unique colors (only black and white)
 export function getColors() {
-    const allColors = products.flatMap(product => product.colors);
-    return [...new Set(allColors)];
+    return ['black', 'white'];
 }
 
 // Helper function to get unique sizes

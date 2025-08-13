@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <style>
+      .logo-text { fill: #111; font-family: system-ui, sans-serif; font-weight: 700; }
+      .logo-accent { fill: #FF5A5F; font-family: system-ui, sans-serif; font-weight: 700; }
+    </style>
+  </defs>
+  
+  <!-- Background with safe area for maskable icons -->
+  <rect x="0" y="0" width="512" height="512" fill="#FFFFFF"/>
+  
+  <!-- Safe area circle (80% of viewport) -->
+  <circle cx="256" cy="256" r="205" fill="#FFFFFF" stroke="#111" stroke-width="8"/>
+  
+  <!-- Logo text in safe area -->
+  <text x="128" y="280" class="logo-text" font-size="80">N</text>
+  <text x="200" y="280" class="logo-accent" font-size="80">S</text>
+  
+  <!-- Additional branding elements -->
+  <text x="180" y="350" class="logo-text" font-size="40">STORE</text>
+</svg>

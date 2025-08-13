@@ -1,0 +1,21 @@
+# apple-touch-icon.png - PNG File Placeholder
+
+This is a placeholder for the apple-touch-icon.png file.
+
+## What to do:
+1. Use the favicon.svg file as source
+2. Generate a PNG file at 180x180 pixels
+3. Replace this placeholder file
+
+## Generation tools:
+- favicon.io
+- realfavicongenerator.net
+- ImageMagick: convert favicon.svg -resize 180x180 apple-touch-icon.png
+- Design software (Figma, Sketch, Illustrator)
+
+## File requirements:
+- Format: PNG
+- Size: 180x180 pixels
+- Colors: Use brand colors (#111, #FF5A5F)
+- Quality: High quality, no compression artifacts
+- Purpose: iOS "Add to Home Screen" icon

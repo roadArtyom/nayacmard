@@ -27,10 +27,6 @@
         "color-all": "Բոլոր գույները",
         "color-black": "Սև",
         "color-white": "Սպիտակ",
-        "color-gray": "Մոխրագույն",
-        "color-red": "Կարմիր",
-        "color-blue": "Կապույտ",
-        "color-green": "Կանաչ",
         "results": "Արդյունքներ:"
     },
     "size": {
@@ -86,5 +82,24 @@
         "close": "Փակել",
         "previous": "Նախորդ",
         "next": "Հաջորդ"
+    },
+    "ai": {
+        "size": {
+            "title": "AI Չափի Օգնական",
+            "description": "Մուտքագրեք ձեր չափերը և ստացեք խորհուրդ",
+            "fit-regular": "Սովորական",
+            "fit-loose": "Լայն",
+            "fit-tight": "Կիպ",
+            "get-size": "Ստանալ չափը",
+            "result": "Խորհուրդվող չափը՝ {size}",
+            "error": "Խնդրում ենք մուտքագրել ճիշտ չափերը"
+        },
+        "search": {
+            "title": "AI Որոնում",
+            "description": "Խելացի որոնում ապրանքների մեջ",
+            "search": "Որոնել",
+            "no-results": "Արդյունք չի գտնվել",
+            "results-found": "Գտնվել է {count} ապրանք"
+        }
     }
 }
